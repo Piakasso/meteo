@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./styles/style.css">
+    <script defer src="./scripts/script.js"></script>
+    <title>Weather</title>
+</head>
+
+<body>
+
+    <div class="main-block">
+        <div class="main-block__container">
+            <div class="widget">
+                <form class="widget__form">
+                    <input class='widget__string' type="text" name="text" placeholder="Search..">
+                    <input class='widget__button' type="submit" name="submit" value="">
+                </form>
+                <h2 class="widget__notice">You don't have permissision</h2>
+            </div>
+            <div class="main-block__popup popup">
+                <span class="popup__title">Weather For You wants to know your current lacation!</span>
+                <span class="popup__subtitle"><img src="./img/location.svg" alt="point">Permission to know your
+                    location</span>
+                <div class="popup__buttons">
+                    <button class="popup__button" type="submit" value="">Allow</button>
+                    <button class="popup__button" type="button" value="">Block</button>
+                </div>
+
+            </div>
+        </div>
+
+        <img class="main-block__bg" src="./img/lightning.jpeg" alt="">
+    </div>
+
+
+</body>
+
+</html>
