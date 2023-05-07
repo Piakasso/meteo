@@ -47,7 +47,9 @@ body {
 /*Main-block*/
 .main-block {
   height: 100%;
-  background: url("../img/Clear.jpeg") center no-repeat;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../img/Clear.jpg");
 }
 
 .main-block__container {
@@ -370,7 +372,7 @@ body {
   }
   .weather__wind {
     font-size: 16px;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
   }
 
   .widget__button {
@@ -401,5 +403,14 @@ body {
   .popup__button {
     padding: 3px 12px;
     font-size: 14px;
+  }
+}
+
+@media (max-height: 420px) {
+  .widget__form {
+    margin: 40px 22px 40px 22px;
+  }
+  .weather__wind {
+    padding-bottom: 40px;
   }
 }

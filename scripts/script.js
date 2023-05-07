@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let widgetWeather = document.createElement("div");
 
   function changeBG(data) {
-    bg.style.background = `url("img/${data.weather[0].main}.jpeg") center no-repeat`;
+    bg.style.backgroundImage = `url("img/${data.weather[0].main}.jpg")`;
   }
 
   function showPopup() {
