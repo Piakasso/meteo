@@ -2,10 +2,6 @@
 
 window.addEventListener("DOMContentLoaded", () => {
   const widget = document.querySelector(".widget");
-  const popup = document.querySelector(".main-block__popup");
-  const buttons = document.querySelector(".popup__buttons");
-  const allowButton = document.querySelector("._allow");
-  const blockButton = document.querySelector("._block");
   const notice = document.querySelector(".widget__notice");
   const search = document.querySelector(".widget__button");
   const input = document.querySelector(".widget__string");
@@ -17,13 +13,6 @@ window.addEventListener("DOMContentLoaded", () => {
     bg.style.backgroundImage = `url("img/${data.weather[0].main}.jpg")`;
   }
 
-  function showPopup() {
-    popup.style.display = "block";
-  }
-
-  function hidePopup() {
-    popup.style.display = "none";
-  }
   function showWidget() {
     widget.style.display = "block";
   }
@@ -40,35 +29,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
   //Get my geolacation
 
-  buttons.addEventListener("click", (e) => {
-    if (e.target === allowButton) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          longitude = position.coords.longitude;
-          latitude = position.coords.latitude;
-          fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=3a45478219da468839419b1a25dc54c0`
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              buildingCard(data);
-              changeBG(data);
-              showWidget();
-              hideNotice();
-            });
-          hidePopup();
-        },
-        function (dismiss) {
-          console.log(dismiss);
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      longitude = position.coords.longitude;
+      latitude = position.coords.latitude;
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=3a45478219da468839419b1a25dc54c0`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          buildingCard(data);
+          changeBG(data);
           showWidget();
-          hidePopup();
-        }
-      );
-    } else if (e.target === blockButton) {
-      hidePopup();
+          hideNotice();
+        });
+    },
+    function (dismiss) {
+      notice.innerHTML = `You don't have permissision`;
       showWidget();
     }
-  });
+  );
 
   // Build cards
 
@@ -92,7 +72,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   search.addEventListener("click", (e) => {
     e.preventDefault();
-
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&appid=3a45478219da468839419b1a25dc54c0`
     )
