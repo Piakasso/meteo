@@ -47,6 +47,7 @@ body {
 /*Main-block*/
 .main-block {
   height: 100%;
+  background: url("../img/Clear.jpeg") center no-repeat;
 }
 
 .main-block__container {
@@ -58,16 +59,6 @@ body {
   overflow: hidden;
 }
 
-.main-block__bg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: contain;
-  z-index: 1;
-}
 .widget {
   position: absolute;
   top: 50%;
@@ -211,10 +202,6 @@ body {
   border: 0.3px solid #000000;
   box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-}
-
-.popup__button:first-child {
-  margin-right: 10px;
 }
 
 .popup__button:hover {

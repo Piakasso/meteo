@@ -7,9 +7,19 @@ window.addEventListener("DOMContentLoaded", () => {
   const allowButton = document.querySelector("._allow");
   const blockButton = document.querySelector("._block");
   const notice = document.querySelector(".widget__notice");
-  const bg = document.querySelector(".main-block__bg");
+  const search = document.querySelector(".widget__button");
+  const input = document.querySelector(".widget__string");
+  const bg = document.querySelector(".main-block");
 
-  //Get my geolacation
+  let widgetWeather = document.createElement("div");
+
+  function changeBG(data) {
+    bg.style.background = `url("../img/${data.weather[0].main}.jpeg") center no-repeat`;
+  }
+
+  function showPopup() {
+    popup.style.display = "block";
+  }
 
   function hidePopup() {
     popup.style.display = "none";
@@ -22,19 +32,33 @@ window.addEventListener("DOMContentLoaded", () => {
     notice.style.display = "none";
   }
 
+  function clearWidgetWeather() {
+    widgetWeather.innerHTML = "";
+  }
+
   let latitude, longitude;
+
+  //Get my geolacation
 
   buttons.addEventListener("click", (e) => {
     if (e.target === allowButton) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          console.log(position);
           longitude = position.coords.longitude;
           latitude = position.coords.latitude;
-          getDataFromWeatherAPI(latitude, longitude);
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=3a45478219da468839419b1a25dc54c0`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              buildingCard(data);
+              showWidget();
+              hideNotice();
+            });
           hidePopup();
         },
-        function () {
+        function (dismiss) {
+          console.log(dismiss);
           showWidget();
           hidePopup();
         }
@@ -45,36 +69,50 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Get data from weather API
+  // Build cards
 
-  function getDataFromWeatherAPI() {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=3a45478219da468839419b1a25dc54c0`
-    )
-      .then((responce) => responce.json())
-      .then(function (data) {
-        console.log(data);
-        showWidget();
-        hideNotice();
-        let widgetWeather = document.createElement("div");
-        widgetWeather.classList.add("widget__weather");
-        widget.appendChild(widgetWeather);
-        widgetWeather.innerHTML = ` <div class="weather__position">Weather in ${
-          data.name
-        }</div>
-        <div class="weather__temperature">${Math.round(
+  function buildingCard(data) {
+    widgetWeather.classList.add("widget__weather");
+    widget.appendChild(widgetWeather);
+    widgetWeather.innerHTML = ` <p class="weather__position">Weather in ${
+      data.name
+    }</p>
+        <p class="weather__temperature">${Math.round(
           data.main.temp - 273
-        )} °C</div>
+        )} °C</p>
         <div class="weather__weather"><img src="./img/icons/${
           data.weather[0].main
-        }.png" width="30px"
-                height="30px">${data.weather[0].main}</div>
-        <div class="weather__humidity">Humidity: ${data.main.humidity}</div>
-        <div class="weather__wind">Wind Speed: ${data.wind.speed} km/hr</div>`;
-
-        //change BG
-
-        bg.outerHTML = `<img class="main-block__bg" loading="lazy" src="./img/${data.weather[0].main}.jpeg" alt="">`;
-      });
+        }.png" width="30px" height="30px">${data.weather[0].main}</div>
+        <p class="weather__humidity">Humidity: ${data.main.humidity} %</p>
+        <p class="weather__wind">Wind Speed: ${data.wind.speed} km/hr</p>`;
   }
+
+  // Get data from search
+
+  search.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&appid=3a45478219da468839419b1a25dc54c0`
+    )
+      .then((response) => {
+        if (response.ok === true) {
+          response.json().then((data) => {
+            clearWidgetWeather();
+            hideNotice();
+            buildingCard(data);
+            changeBG(data);
+          });
+        } else {
+          notice.style.display = "block";
+          notice.innerHTML = "Wrong name of the city.Please try again";
+          clearWidgetWeather();
+          throw new Error(response.statusText);
+        }
+      })
+      .catch((e) => {})
+      .finally(() => {
+        input.value = "";
+      });
+  });
 });
